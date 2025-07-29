@@ -42,6 +42,10 @@ T = TypeVar("T")
 
 
 def convert_image_dtype(image: np.ndarray, dtype) -> np.ndarray:
+    # print(image.shape, image.dtype, dtype)
+    if image.shape[-1]==4 :
+        # Convert to uint8, but not keep alpha channel
+        return np.clip(image[..., :3] * 255.0, 0, 255).astype(dtype)
     if image.dtype == dtype:
         return image
     if image.dtype != np.uint8 and dtype != np.uint8:
@@ -50,6 +54,7 @@ def convert_image_dtype(image: np.ndarray, dtype) -> np.ndarray:
         return image.astype(dtype) / 255.0
     if image.dtype != np.uint8 and dtype == np.uint8:
         return np.clip(image * 255.0, 0, 255).astype(np.uint8)
+    
     raise ValueError(f"cannot convert image from {image.dtype} to {dtype}")
 
 
@@ -435,6 +440,7 @@ class UncertaintyModel(nn.Module):
     def get_loss(self, gt_image, image, prefix='', _cache_entry=None):
         gt_torch = gt_image.unsqueeze(0)
         image = image.unsqueeze(0)
+        # print("gt_torch, image",gt_torch.shape, image.shape)
         loss, metrics, loss_mult = self._compute_losses(gt_torch, image, prefix, _cache_entry=_cache_entry)
         loss_mult = loss_mult.squeeze(0)
         metrics[f"{prefix}uncertainty_loss"] = metrics.pop(f"{prefix}loss")
