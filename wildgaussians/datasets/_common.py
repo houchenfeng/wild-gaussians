@@ -243,6 +243,7 @@ def dataset_load_features(
     image_sizes = []
     all_metadata = []
     resize = dataset["metadata"].get("downscale_loaded_factor")
+    resize=2
     if resize == 1:
         resize = None
 
