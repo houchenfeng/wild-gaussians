@@ -314,7 +314,7 @@ def dataset_load_features(
 
     # Replace image sizes and metadata
     image_sizes = np.array(image_sizes, dtype=np.int32)
-
+    print("resize",resize,image_sizes)
     _dataset_rescale_intrinsics(cast(Dataset, dataset), image_sizes)
 
     if supported_camera_models is not None and supported_camera_models != set(("pinhole",)):

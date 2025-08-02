@@ -310,7 +310,7 @@ def train_command(
 
     info = method.get_info()
     acc_metrics = MetricsAccumulator()
-
+    logging.info(f"!!!!!!!!!!!!!!!!!!!!!!!dataset_type,{dataset_type}")
     num_iterations = info["num_iterations"]
     assert num_iterations is not None, "num_iterations must be set in the config"
     step = 0
